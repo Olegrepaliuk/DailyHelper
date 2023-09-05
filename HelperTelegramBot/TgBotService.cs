@@ -61,9 +61,9 @@ namespace HelperTelegramBot
 
         private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            string ownerId = _configuration["OwnerId"];
-
-            if (update?.Message.Chat.Id.ToString() != ownerId)
+            string[] chatsWithAccess = _configuration.GetSection("ChatsWithAсcess").GetChildren().Select(item => item.Value).ToArray();
+            
+            if (!chatsWithAccess.Contains(update?.Message.Chat.Id.ToString()))
             {
                 return;
             }
